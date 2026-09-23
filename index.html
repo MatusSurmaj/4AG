@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hospodársky systém</title>
+<style>
+:root{
+  --bg:#f4f8f2; --panel:#ffffff; --panel2:#edf5eb; --text:#173b2b;
+  --muted:#607568; --accent:#3f8f5f; --accent2:#78ad82; --warn:#d69e2e;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;font-family:Inter,Segoe UI,Arial,sans-serif;background:var(--bg);color:var(--text)}
+body{overflow:hidden}
+.deck{height:100vh;position:relative}
+.slide{display:none;height:100vh;padding:58px 8vw 80px;overflow:auto}
+.slide.active{display:flex;flex-direction:column;justify-content:center}
+h1{font-size:clamp(42px,6vw,82px);margin:0 0 18px;line-height:1.02}
+h2{font-size:clamp(32px,4vw,56px);margin:0 0 28px}
+h3{font-size:25px;margin:0 0 12px}
+p,li{font-size:clamp(18px,1.8vw,25px);line-height:1.55}
+.subtitle{font-size:clamp(20px,2vw,30px);color:var(--muted);max-width:850px}
+.kicker{color:var(--accent);font-weight:800;letter-spacing:.12em;text-transform:uppercase;margin-bottom:15px}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:22px}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.card{background:linear-gradient(145deg,var(--panel),var(--panel2));border:1px solid #263a54;border-radius:20px;padding:25px;box-shadow:0 12px 30px #0003}
+.card strong{color:var(--accent)}
+.bigword{font-size:clamp(42px,6vw,75px);font-weight:900;color:var(--accent)}
+table{width:100%;border-collapse:collapse;background:var(--panel);border-radius:16px;overflow:hidden;font-size:18px}
+th,td{padding:15px 17px;border-bottom:1px solid #dce7da;text-align:left;vertical-align:top}
+th{background:#e4f0e2;color:#2f744a}
+tr:last-child td{border-bottom:0}
+.pill{display:inline-block;padding:7px 13px;border-radius:999px;background:#dceedd;color:#316b45;margin:4px;font-weight:700}
+.diagram{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;margin:25px 0}
+.node{padding:20px 24px;border-radius:18px;background:#e7f2e5;border:2px solid #9fc6a5;text-align:center;min-width:180px;font-weight:800}
+.arrow{font-size:32px;color:var(--accent)}
+.question{border-left:6px solid var(--warn);padding:18px 24px;background:#fff8e5;border-radius:12px}
+.answer{display:none;margin-top:14px;color:#111;font-weight:600}
+button{cursor:pointer;border:0;border-radius:12px;padding:11px 16px;background:var(--accent);color:#06201d;font-weight:800;font-size:15px}
+.controls{position:fixed;left:0;right:0;bottom:0;height:64px;background:rgba(244,248,242,.96);border-top:1px solid #d6e2d3;display:flex;align-items:center;justify-content:center;gap:12px;z-index:20}
+.controls button{background:#3f8f5f;color:white;border:1px solid #34784e}
+.controls button:hover{background:#34784e}
+.counter{position:absolute;right:25px;color:var(--muted);font-weight:700}
+.progress{position:fixed;top:0;left:0;height:5px;background:var(--accent);z-index:30;transition:.25s}
+.badge{font-size:14px;padding:6px 10px;background:#e0ecde;border-radius:8px;color:#396447}
+.highlight{color:var(--accent);font-weight:900}
+.small{font-size:16px;color:var(--muted)}
+.center{text-align:center}
+.icon{font-size:48px;margin-bottom:12px}
+@media(max-width:800px){
+ .grid,.grid4{grid-template-columns:1fr}
+ .slide{padding:35px 6vw 85px}
+ table{font-size:14px}
+ th,td{padding:10px}
+}
+</style>
+</head>
+<body>
+<div class="deck">
+<div class="progress" id="progress"></div>
+
+<section class="slide active">
+  <h1>HOSPODÁRSKY<br><span class="highlight">SYSTÉM</span></h1>
+  <p class="subtitle">Ako spoločnosť rozhoduje o tom, <b>čo vyrábať, ako vyrábať a pre koho vyrábať</b>?</p>
+  
+</section>
+
+<section class="slide">
+  <div class="kicker">1 • ZÁKLAD</div>
+  <h2>Čo je hospodársky systém?</h2>
+  <div class="card">
+    <p><b>Hospodársky systém</b> je spôsob, akým je v spoločnosti organizované hospodárstvo a ako sa rozhoduje o využívaní obmedzených zdrojov.</p>
+    <p>Určuje najmä:</p>
+    <div class="diagram">
+      <div class="node">ČO vyrábať?</div><div class="arrow">→</div>
+      <div class="node">AKO vyrábať?</div><div class="arrow">→</div>
+      <div class="node">PRE KOHO vyrábať?</div>
+    </div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="kicker">2 • TRI ZÁKLADNÉ OTÁZKY</div>
+  <h2>Každé hospodárstvo musí rozhodovať</h2>
+  <div class="grid">
+    <div class="card"><div class="icon">🏭</div><h3>Čo vyrábať?</h3><p>Ktoré tovary a služby sa budú vyrábať a v akom množstve?</p><p class="small">Príklad: viac bytov alebo viac automobilov?</p></div>
+    <div class="card"><div class="icon">⚙️</div><h3>Ako vyrábať?</h3><p>Aké výrobné faktory, technológie a postupy sa použijú?</p><p class="small">Príklad: ľudia alebo automatizované stroje?</p></div>
+    <div class="card"><div class="icon">👥</div><h3>Pre koho vyrábať?</h3><p>Kto bude mať prístup k vyrobeným tovarom a službám?</p><p class="small">Podľa cien, príjmov, potrieb alebo rozhodnutia štátu?</p></div>
+    <div class="card"><div class="icon">💰</div><h3>Kto rozhoduje?</h3><p>Podľa systému rozhoduje najmä trh, štát, tradície alebo ich kombinácia.</p></div>
+  </div>
+</section>
+
+
+<section class="slide">
+  <div class="kicker">4 • HLAVNÉ TYPY</div>
+  <h2>Štyri základné modely hospodárstva</h2>
+  <div class="grid4">
+    <div class="card center"><div class="icon">🏺</div><h3>Tradičný</h3><p>Rozhodujú zvyky, tradície a skúsenosti.</p><p class="small"><b>Príklad:</b> Papua-Nová Guinea – najmä tradičné a samozásobiteľské komunity.</p></div>
+    <div class="card center"><div class="icon">🏛️</div><h3>Príkazový</h3><p>O hospodárstve výrazne rozhoduje štát.</p><p class="small"><b>Príklad:</b> Severná Kórea – silne centrálne riadené hospodárstvo.</p></div>
+    <div class="card center"><div class="icon">🛒</div><h3>Trhový</h3><p>Rozhodnutia koordinuje najmä trh.</p><p class="small"><b>Dnes:</b> čistý trhový systém prakticky neexistuje; moderné štáty používajú rôzne formy zmiešaného systému.</p></div>
+    <div class="card center"><div class="icon">⚖️</div><h3>Zmiešaný</h3><p>Kombinuje trhové mechanizmy a zásahy štátu.</p><p class="small"><b>Príklady:</b> Slovensko, Nemecko, Francúzsko, Švédsko.</p></div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="kicker">5 • TRADIČNÝ SYSTÉM</div>
+  <h2>Keď rozhodujú tradície</h2>
+  <div class="grid">
+    <div class="card"><h3>Charakteristika</h3><ul><li>silný vplyv zvykov a tradícií</li><li>výroba často nadväzuje na činnosť predchádzajúcich generácií</li><li>významné sú miestne podmienky a komunita</li></ul></div>
+    <div class="card"><h3>Jednoduchý príklad</h3><p>Rodina sa po generácie venuje určitému remeslu alebo poľnohospodárstvu. Spôsob práce sa mení pomaly a veľká časť produkcie slúži priamo komunite.</p></div>
+  </div>
+  <div class="question"><b>Otázka:</b> Poznáte povolanie alebo remeslo, ktoré sa vo vašom okolí odovzdáva z generácie na generáciu?</div>
+</section>
+
+<section class="slide">
+  <div class="kicker">6 • PRÍKAZOVÝ SYSTÉM</div>
+  <h2>Keď rozhoduje štát</h2>
+  <div class="card">
+    <p>V <b>príkazovom (centrálne plánovanom) hospodárstve</b> má štát rozhodujúcu úlohu pri určovaní výroby a rozdeľovania zdrojov.</p>
+    <div class="diagram">
+      <div class="node">ŠTÁT<br><span class="small">plánovanie</span></div><div class="arrow">→</div>
+      <div class="node">PODNIKY<br><span class="small">plnia plán</span></div><div class="arrow">→</div>
+      <div class="node">OBYVATEĽSTVO</div>
+    </div>
+    <p><b>Historický príklad:</b> centrálne plánované ekonomiky bývalého socialistického bloku, vrátane Československa pred rokom 1989.</p>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="kicker">7 • TRHOVÝ SYSTÉM</div>
+  <h2>Keď rozhoduje trh</h2>
+  <div class="grid">
+    <div class="card"><h3>Čo ovplyvňuje rozhodnutia?</h3><ul><li>dopyt a ponuka</li><li>ceny</li><li>zisk a konkurencia</li><li>rozhodnutia spotrebiteľov</li></ul></div>
+    <div class="card"><h3>Príklad</h3><p>Ak zákazníci začnú vo veľkom kupovať určitý produkt, podniky môžu reagovať zvýšením jeho výroby. Cena pritom poskytuje výrobcom informáciu o situácii na trhu.</p></div>
+  </div>
+  <div class="diagram">
+    <div class="node">SPOTREBITEĽ<br>🛒</div><div class="arrow">↔</div>
+    <div class="node">TRH<br>💰</div><div class="arrow">↔</div>
+    <div class="node">FIRMY<br>🏭</div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="kicker">8 • ZMIEŠANÝ SYSTÉM</div>
+  <h2>Trh + štát</h2>
+  <div class="card">
+    <p><b>Zmiešané hospodárstvo</b> kombinuje fungovanie trhového mechanizmu so zásahmi štátu.</p>
+    <div class="grid" style="margin-top:20px">
+      <div><h3>Trh zabezpečuje</h3><ul><li>ceny</li><li>konkurenciu</li><li>podnikateľské rozhodnutia</li><li>alokáciu zdrojov cez trhový mechanizmus</li></ul></div>
+      <div><h3>Štát zabezpečuje / ovplyvňuje</h3><ul><li>právne pravidlá</li><li>verejné služby</li><li>reguláciu</li><li>verejné financie a sociálne politiky</li></ul></div>
+    </div>
+  </div>
+  <p class="subtitle">Väčšina súčasných európskych ekonomík funguje ako rôzne formy zmiešaného hospodárstva.</p>
+</section>
+
+<section class="slide">
+  <div class="kicker">9 • OTVORENÝ SYSTÉM</div>
+  <h2>Otvorený hospodársky systém</h2>
+  <div class="card center">
+    <div class="diagram" style="margin:28px 0 18px">
+      <div class="node" style="min-width:230px;font-size:22px">🏠 DOMÁCA EKONOMIKA</div>
+    </div>
+    <div style="display:flex;justify-content:center;align-items:center;gap:18px;flex-wrap:wrap">
+      <div class="node">📦 VÝVOZ<br><span class="small">predávame do zahraničia</span></div>
+      <div class="node">📥 DOVOZ<br><span class="small">nakupujeme zo zahraničia</span></div>
+    </div>
+    <div style="margin:22px auto 5px;font-size:38px;color:var(--accent)">↕</div>
+    <div class="node" style="display:inline-block;min-width:280px">🌍 ZAHRANIČIE</div>
+  </div>
+  <p class="subtitle center"><span class="highlight">Jednoducho:</span> krajina obchoduje so zahraničím – niečo predáva a niečo nakupuje.</p>
+  <p class="small center">🌍 <b>Príklad:</b> Singapur – veľmi otvorená ekonomika s rozsiahlym zahraničným obchodom.</p>
+</section>
+
+<section class="slide">
+  <div class="kicker">10 • UZAVRETÝ SYSTÉM</div>
+  <h2>Uzavretý hospodársky systém</h2>
+  <div class="card center">
+    <div class="node" style="display:inline-block;min-width:300px;font-size:22px">🏠 DOMÁCA EKONOMIKA</div>
+    <div style="font-size:45px;color:#a85a5a;margin:14px 0">🚫</div>
+    <div class="node" style="display:inline-block;min-width:280px">🌍 ZAHRANIČIE<br><span class="small">obmedzené vzťahy</span></div>
+    <div class="diagram" style="margin-top:25px">
+      <div class="node">🏭 DOMÁCA VÝROBA</div>
+      <div class="arrow">→</div>
+      <div class="node">🛒 DOMÁCI TRH</div>
+    </div>
+  </div>
+  <p class="subtitle center"><span class="highlight">Jednoducho:</span> krajina sa snaží vyrábať a spotrebúvať čo najviac doma a obmedzuje obchod so zahraničím.</p>
+  <p class="small center">🔒 <b>Príklad:</b> Severná Kórea – veľmi uzavretá ekonomika, hoci nie úplne bez zahraničného obchodu.</p>
+</section>
+
+
+<section class="slide">
+  <div class="kicker">9 • POROVNANIE</div>
+  <h2>Ako sa systémy líšia?</h2>
+  <table>
+    <thead><tr><th>Otázka / znak</th><th>Tradičný</th><th>Príkazový</th><th>Trhový</th><th>Zmiešaný</th></tr></thead>
+    <tbody>
+      <tr><td>Kto rozhoduje?</td><td>tradície, komunita</td><td>štát</td><td>trh, firmy, spotrebitelia</td><td>trh + štát</td></tr>
+      <tr><td>Úloha cien</td><td>nižšia</td><td>často administratívna</td><td>veľmi významná</td><td>veľmi významná</td></tr>
+      <tr><td>Konkurencia</td><td>obmedzená</td><td>zvyčajne nízka</td><td>významná</td><td>významná</td></tr>
+      <tr><td>Úloha štátu</td><td>malá/komunitná</td><td>dominantná</td><td>menšia</td><td>významná, ale nie dominantná</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section class="slide">
+  <div class="kicker">10 • DÔLEŽITÉ</div>
+  <h2>Realita nie je čiernobiela</h2>
+  <div class="card">
+    <p>Skutočné ekonomiky sa väčšinou nedajú presne zaradiť do jednej „čistej“ kategórie.</p>
+    <div class="diagram">
+      <div class="node">VIAC ŠTÁTU</div>
+      <div class="arrow">←</div>
+      <div class="node">ZMIEŠANÉ HOSPODÁRSTVO</div>
+      <div class="arrow">→</div>
+      <div class="node">VIAC TRHU</div>
+    </div>
+    <p>Rozdiely medzi krajinami môžu byť v rozsahu regulácie, zdaňovania, verejných služieb, vlastníctva alebo sociálnej politiky.</p>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="kicker">12 • AKTIVITA</div>
+  <h2>Čo by ste urobili?</h2>
+  <div class="question">
+    <p><b>Predstavte si, že máte spoločne rozhodnúť o výrobe školských notebookov.</b></p>
+    <p>1. Kto rozhodne, koľko notebookov sa vyrobí?<br>
+    2. Kto určí cenu?<br>
+    3. Kto rozhodne, komu budú notebooky pridelené?<br>
+    4. Akú úlohu by mal mať štát?</p>
+    <button onclick="document.getElementById('a1').style.display='block'">Zobraziť možné riešenie</button>
+    <div id="a1" class="answer">Neexistuje jediná správna odpoveď. Odpoveď závisí od toho, aký hospodársky systém si predstavujeme. V trhovom systéme by významnú úlohu mali dopyt, ponuka a ceny; v príkazovom systéme by výraznejšie rozhodoval štát.</div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="kicker">13 • RÝCHLE OPAKOVANIE</div>
+  <h2>Dokážeš odpovedať?</h2>
+  <div class="grid">
+    <div class="card"><h3>1</h3><p>Čo je hospodársky systém?</p></div>
+    <div class="card"><h3>2</h3><p>Aké tri základné ekonomické otázky rieši každá ekonomika?</p></div>
+    <div class="card"><h3>3</h3><p>Kto má dominantnú úlohu v príkazovom systéme?</p></div>
+    <div class="card"><h3>4</h3><p>Aká je hlavná úloha cien v trhovom systéme?</p></div>
+    <div class="card"><h3>5</h3><p>Čo charakterizuje zmiešané hospodárstvo?</p></div>
+    <div class="card"><h3>6</h3><p>Aký je rozdiel medzi otvoreným a uzavretým hospodárskym systémom?</p></div>
+  </div>
+</section>
+
+<section class="slide center">
+  <div class="kicker">ZÁVER</div>
+  <h1>Hospodárstvo je o<br><span class="highlight">ROZHODOVANÍ</span></h1>
+  <p class="subtitle" style="margin:auto">Obmedzené zdroje → potreby → rozhodnutia → výroba → rozdeľovanie.</p>
+  <div style="margin-top:35px"><span class="badge">ČO?</span> <span class="badge">AKO?</span> <span class="badge">PRE KOHO?</span></div>
+</section>
+</div>
+
+<div class="controls">
+<button onclick="prev()">← Predchádzajúca</button>
+<button onclick="next()">Ďalšia →</button>
+<div class="counter" id="counter">1 / 13</div>
+</div>
+
+<script>
+const slides=[...document.querySelectorAll('.slide')];
+let i=0;
+function show(n){
+  i=(n+slides.length)%slides.length;
+  slides.forEach((s,k)=>s.classList.toggle('active',k===i));
+  document.getElementById('counter').textContent=(i+1)+' / '+slides.length;
+  document.getElementById('progress').style.width=((i+1)/slides.length*100)+'%';
+}
+function next(){show(i+1)}
+function prev(){show(i-1)}
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();next()}
+  if(e.key==='ArrowLeft'){e.preventDefault();prev()}
+  if(e.key==='Home')show(0);
+  if(e.key==='End')show(slides.length-1);
+});
+show(0);
+</script>
+</body>
+</html>
