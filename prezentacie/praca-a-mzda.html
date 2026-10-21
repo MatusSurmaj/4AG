@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="sk" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Práca a mzda</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root,:root[data-theme="light"]{--bg:#FFF3E3;--ink:#3B1F2B;--card:#FFFBF5;--apr:#FFB074;--saf:#F6C453;--ros:#F08A9B;--ter:#E8845C;--onc:#3B1F2B;--tbg:#FFB074;--tfg:#3B1F2B;--dbg:#3B1F2B;--dfg:#FFF3E3;--l1:#B8442A;--l2:#7A2E63;--bw:3px}
+:root[data-theme="dark"]{--bg:#2A1520;--ink:#FFEBD6;--card:#43232F;--apr:#FFB074;--saf:#F6C453;--ros:#F08A9B;--ter:#E8845C;--onc:#2A1520;--tbg:#43232F;--tfg:#FFEBD6;--dbg:#170A10;--dfg:#FFEBD6;--l1:#FFB074;--l2:#F08A9B;--bw:3px}
+:root[data-theme="contrast"]{--bg:#FFFFFF;--ink:#000000;--card:#FFFFFF;--apr:#FFA555;--saf:#FFD21F;--ros:#FF8AA0;--ter:#FF8A5C;--onc:#000000;--tbg:#FFD21F;--tfg:#000000;--dbg:#000000;--dfg:#FFFFFF;--l1:#B02A00;--l2:#6A0F5A;--bw:5px}
+*{box-sizing:border-box;margin:0}
+html,body{height:100%}
+body{font-family:'Bricolage Grotesque',system-ui,sans-serif;background:var(--bg);color:var(--ink);overflow:hidden}
+.slide{position:absolute;inset:0;display:none;padding:10vh 8vw 12vh;flex-direction:column;justify-content:center;justify-content:safe center;gap:2.4vh;overflow:auto}
+.slide.on{display:flex}
+h1{font-size:clamp(3.5rem,10vw,8.5rem);font-weight:800;line-height:.95;letter-spacing:-.03em}
+h2{font-size:clamp(1.9rem,4.2vw,3.3rem);font-weight:800;letter-spacing:-.02em;line-height:1.05}
+h2 small{display:block;font-size:.4em;font-weight:600;color:var(--l1);letter-spacing:.04em;margin-bottom:.6vh}
+p,li{font-size:clamp(1.05rem,1.7vw,1.4rem);line-height:1.4;max-width:56ch}
+ul,ol{padding-left:1.3em}
+.grid{display:grid;gap:1.6vw;grid-template-columns:repeat(auto-fit,minmax(210px,1fr))}
+.card{border-radius:22px;padding:2vh 1.5vw;background:var(--card);border:var(--bw) solid var(--ink)}
+.card h3{font-size:clamp(1.15rem,1.9vw,1.6rem);margin-bottom:.5vh}
+.card p,.card li{font-size:clamp(.95rem,1.4vw,1.2rem)}
+.big{font-size:clamp(1.8rem,3.6vw,3rem);font-weight:800;line-height:1}
+.c1,.c2,.c3,.c4{color:var(--onc);border-color:var(--onc)}
+:root[data-theme="dark"] .c1,:root[data-theme="dark"] .c2,:root[data-theme="dark"] .c3,:root[data-theme="dark"] .c4{border-color:var(--ink)}
+.c1{background:var(--apr)}.c2{background:var(--saf)}.c3{background:var(--ros)}.c4{background:var(--ter)}
+.title{background:var(--tbg);color:var(--tfg)}
+.title p{font-size:clamp(1.2rem,2.4vw,2rem);max-width:30ch;font-weight:600}
+.blob{position:absolute;border-radius:50%;z-index:0}
+.slide>*{position:relative;z-index:1}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:3vw;align-items:center}
+.two svg{width:100%;max-height:54vh}
+.dark{background:var(--dbg);color:var(--dfg)}
+.pill{display:inline-block;padding:.45em 1em;border-radius:99px;font-weight:600;font-size:clamp(1rem,1.5vw,1.25rem);margin:.25em .35em .25em 0;background:var(--saf);color:var(--onc)}
+.note{border:var(--bw) dashed var(--ink);border-radius:18px;padding:1.2vh 1.4vw;max-width:none}
+.note p,.note li{max-width:none;font-size:clamp(.95rem,1.4vw,1.2rem)}
+table{border-collapse:collapse;width:100%}
+th,td{padding:.7vh .9vw;border:2px solid var(--ink);text-align:left;font-size:clamp(.95rem,1.45vw,1.2rem)}
+th{background:var(--saf);color:var(--onc)}td{background:var(--card)}
+tr.sum td{font-weight:800;background:var(--apr);color:var(--onc)}
+details{margin-top:.6vh}
+summary{cursor:pointer;display:inline-block;padding:.4em 1em;border-radius:99px;background:var(--saf);color:var(--onc);font-weight:700;font-size:clamp(.95rem,1.4vw,1.15rem)}
+details p,details li{margin-top:.8vh;max-width:none;font-size:clamp(.95rem,1.4vw,1.2rem)}
+.formula{display:flex;flex-wrap:wrap;align-items:center;gap:1vw}.formula b{font-size:clamp(1.8rem,3.6vw,3rem)}.formula .t{padding:.5em .9em;border-radius:18px;border:var(--bw) solid var(--onc);font-weight:800;font-size:clamp(1.2rem,2.5vw,2.1rem)}
+.gf{fill:var(--card);stroke:var(--ink);stroke-width:var(--bw)}
+.gl1{stroke:var(--l1)}.gl2{stroke:var(--l2)}
+.gl1,.gl2{stroke-width:8;stroke-linecap:round}
+.gd{stroke:var(--ink);stroke-width:2;stroke-dasharray:6 6}
+.gp{fill:var(--saf);stroke:var(--ink);stroke-width:var(--bw)}
+.gt{fill:var(--ink);font-weight:700}
+.bar{position:fixed;left:0;bottom:0;height:8px;background:var(--ter);transition:width .3s;z-index:5}
+.nav{position:fixed;right:3vw;bottom:2.5vh;display:flex;gap:10px;z-index:5;align-items:center;color:var(--ink)}
+.nav.ond{color:var(--dfg)}
+.nav span{font-weight:600}
+.nav button{width:48px;height:48px;border-radius:50%;border:var(--bw) solid var(--ink);background:var(--saf);color:var(--onc);font-size:1.3rem;cursor:pointer;font-family:inherit}
+.nav.ond button{border-color:var(--dfg)}
+.nav button:hover{background:var(--apr)}
+.theme{position:fixed;top:calc(2vh + env(safe-area-inset-top,0px));right:3vw;z-index:6;display:flex;border:var(--bw) solid var(--ink);border-radius:99px;overflow:hidden;background:var(--card)}
+.theme button{font:inherit;font-weight:600;font-size:clamp(.85rem,1.2vw,1.05rem);padding:.55em 1em;border:0;background:transparent;color:var(--ink);cursor:pointer;white-space:nowrap}
+.theme button[aria-pressed="true"]{background:var(--saf);color:var(--onc)}
+.theme button:hover{text-decoration:underline}
+:root[data-theme="dark"] .theme button[aria-pressed="true"]{background:var(--apr)}
+:focus-visible{outline:4px solid var(--ter);outline-offset:3px}
+:root[data-theme="contrast"] :focus-visible{outline-color:#000}
+@media(max-width:700px){.two{grid-template-columns:1fr}.slide{justify-content:flex-start}.theme button span{display:none}}
+</style>
+</head>
+<body>
+
+<div class="theme" role="group" aria-label="Farebná téma (kláves T)">
+  <button data-t="light" aria-pressed="true">&#9728; <span>Svetlá</span></button>
+  <button data-t="dark" aria-pressed="false">&#9790; <span>Tmavá</span></button>
+  <button data-t="contrast" aria-pressed="false">&#9680; <span>Kontrast</span></button>
+</div>
+
+<section class="slide on title">
+  <div class="blob" style="width:42vw;height:42vw;background:var(--saf);right:-8vw;top:-10vw;opacity:.9"></div>
+  <div class="blob" style="width:22vw;height:22vw;background:var(--ros);right:14vw;bottom:-6vw"></div>
+  <h1>Práca a mzda</h1>
+  <p>Od trhu práce až po výplatnú pásku.</p>
+</section>
+
+<section class="slide">
+  <h2><small>1.1 PRÁCA A TRH PRÁCE</small>Práca v každodennom živote</h2>
+  <p>Ľudia robia činnosti pre vlastnú potrebu aj za odmenu. Práca má ekonomický význam, keď sa ľudská činnosť využíva na tvorbu statkov alebo poskytovanie služieb.</p>
+  <div class="grid">
+    <div class="card c1"><h3>Pekár</h3><p>Upečie chlieb – výrobok.</p></div>
+    <div class="card c2"><h3>Učiteľ</h3><p>Učí – služba.</p></div>
+    <div class="card c3"><h3>Elektrikár</h3><p>Opraví poruchu – služba.</p></div>
+  </div>
+  <div class="note"><p><b>Otázky:</b> Je pomoc kamarátovi s učením práca? Záleží na tom, či je platená? V bežnej reči je prácou aj neplatená činnosť, no ako výrobný faktor ide o ľudské úsilie a schopnosti pri výrobe statkov a služieb.</p></div>
+</section>
+
+<section class="slide">
+  <h2><small>1.2</small>Práca ako výrobný faktor</h2>
+  <p>Práca je cieľavedomá ľudská činnosť, pri ktorej človek využíva fyzické alebo duševné schopnosti na tvorbu výrobkov a služieb.</p>
+  <div class="grid">
+    <div class="card c1"><h3>Pôda</h3><p>Prírodné zdroje.</p></div>
+    <div class="card c2"><h3>Práca</h3><p>Murár, projektant, účtovník, programátor, zdravotná sestra.</p></div>
+    <div class="card c3"><h3>Kapitál</h3><p>Stroje, budovy, náradie.</p></div>
+    <div class="card c4"><h3>Podnikanie</h3><p>Organizuje a kombinuje faktory.</p></div>
+  </div>
+  <div class="note"><p>Práca nie je len fyzická – duševná práca, rozhodovanie, komunikácia a tvorivosť sú rovnako dôležité. Faktory sa dopĺňajú: materiál ani stroj nestačí, niekto musí prácu naplánovať, obsluhovať zariadenia a skontrolovať výsledok. <b>Čo sa stane, ak má podnik stroje a materiál, ale nemá kvalifikovaných pracovníkov?</b></p></div>
+</section>
+
+<section class="slide">
+  <h2><small>1.3</small>Pracovná sila, zamestnanie a nezamestnanosť</h2>
+  <div class="grid">
+    <div class="card c1"><h3>Pracovná sila</h3><p>Ľudia, ktorí pracujú alebo si aktívne hľadajú prácu a sú pripravení nastúpiť.</p></div>
+    <div class="card c2"><h3>Zamestnaný</h3><p>Vykonáva platenú prácu alebo má zamestnanie či podnikateľskú činnosť.</p></div>
+    <div class="card c3"><h3>Nezamestnaný</h3><p>Prácu nemá, aktívne ju hľadá a je pripravený nastúpiť.</p></div>
+    <div class="card c4"><h3>Ekonomicky neaktívny</h3><p>Napríklad študent, ktorý si prácu nehľadá.</p></div>
+  </div>
+  <div class="note"><p><b>Peter</b> prišiel o prácu, posiela životopisy a môže nastúpiť budúci týždeň – nezamestnaný. <b>Jana</b> študuje a prácu si nehľadá – nemusí sa počítať medzi nezamestnaných. <b>Prečo štát pri meraní používa jednotnú definíciu?</b></p></div>
+</section>
+
+<section class="slide">
+  <h2><small>1.4</small>Trh práce – ponuka a dopyt</h2>
+  <div class="two">
+    <div>
+      <ul>
+        <li><b>Ponuka práce:</b> koľko ľudí je ochotných pracovať pri určitej mzde.</li>
+        <li><b>Dopyt po práci:</b> koľko pracovníkov chcú a dokážu zamestnávatelia prijať.</li>
+        <li>Mzda nie je jediná podmienka: pracovný čas, bezpečnosť, dochádzanie, stabilita, rast, kolektív.</li>
+        <li>Veľa uchádzačov a málo miest → ťažšie hľadanie. Nedostatok odborníkov → vyššia mzda alebo lepšie podmienky.</li>
+      </ul>
+    </div>
+    <svg viewBox="0 0 400 320" role="img" aria-label="Graf ponuky a dopytu po práci s rovnovážnou mzdou">
+      <rect class="gf" x="30" y="10" width="360" height="270" rx="18"/>
+      <line class="gl1" x1="60" y1="40" x2="360" y2="250"/>
+      <line class="gl2" x1="60" y1="250" x2="360" y2="40"/>
+      <line class="gd" x1="210" y1="145" x2="210" y2="280"/>
+      <line class="gd" x1="30" y1="145" x2="210" y2="145"/>
+      <circle class="gp" cx="210" cy="145" r="15"/>
+      <text class="gt" x="70" y="62" font-size="17">dopyt po práci</text>
+      <text class="gt" x="70" y="235" font-size="17">ponuka práce</text>
+      <text class="gt" x="226" y="122" font-size="17">rovnováha</text>
+      <text class="gt" x="150" y="304" font-size="15" font-weight="400">počet pracovníkov</text>
+      <text class="gt" x="4" y="150" font-size="15" font-weight="400" transform="rotate(-90 14 150)">mzda</text>
+    </svg>
+  </div>
+  <div class="note"><p><b>Otázky:</b> Prečo majú programátori vyššiu mzdu? Prečo sa situácia líši medzi regiónmi? Čo sa stane s dopytom, ak firma získa veľkú zákazku?</p></div>
+</section>
+
+<section class="slide">
+  <h2><small>1.5 AKTIVITA</small>Kto koho hľadá?</h2>
+  <p>Skupiny určia, či sa mení ponuka práce alebo dopyt po práci, a aký to bude mať dôsledok.</p>
+  <div class="grid">
+    <div class="card c1"><h3>A</h3><p>V meste sa otvorí nová nemocnica a potrebuje sestry.</p></div>
+    <div class="card c2"><h3>B</h3><p>Škola otvorí nový odbor a o pár rokov pribudne absolventov.</p></div>
+    <div class="card c3"><h3>C</h3><p>Stavebná firma získa zákazku na bytový dom.</p></div>
+    <div class="card c4"><h3>D</h3><p>Firma zavedie stroje, ktoré robia jednoduché úlohy.</p></div>
+    <div class="card c1"><h3>E</h3><p>Zamestnávateľ ponúkne flexibilný čas a zaškolenie.</p></div>
+  </div>
+</section>
+
+<section class="slide">
+  <h2><small>2.2 MZDA A JEJ FORMY</small>Čo je mzda?</h2>
+  <p>Peňažná odmena, ktorú zamestnanec dostáva za vykonanú prácu podľa dohodnutých podmienok. Skladá sa zo základnej mzdy, príplatkov, odmien a ďalších zložiek.</p>
+  <div class="grid">
+    <div class="card c1"><h3>Príjem</h3><p>Zdroj peňazí pracovníka.</p></div>
+    <div class="card c2"><h3>Motivácia</h3><p>Vedie k práci a výkonu.</p></div>
+    <div class="card c3"><h3>Životná úroveň</h3><p>Ovplyvňuje, čo si môžeme dovoliť.</p></div>
+    <div class="card c4"><h3>Náklad firmy</h3><p>A signál, po akých zručnostiach je dopyt.</p></div>
+  </div>
+  <div class="note"><p><b>Mzda vs. plat:</b> mzda sa tradične používa v súkromnej sfére, plat pri vybraných zamestnancoch podľa osobitných pravidiel (časť verejného sektora). <b>Príklad:</b> rovnaká základná mzda, ale jeden má príplatky za nočné zmeny a druhý odmenu za cieľ – ich hrubá mzda sa líši.</p></div>
+</section>
+
+<section class="slide">
+  <h2><small>2.3</small>Nominálna a reálna mzda</h2>
+  <div class="two">
+    <div>
+      <p><b>Nominálna mzda</b> je suma peňazí za určité obdobie. Nehovorí, čo si za ňou kúpime.</p>
+      <p style="margin-top:1.2vh"><b>Reálna mzda</b> vyjadruje kúpnu silu – koľko tovarov a služieb si za mzdu kúpime.</p>
+      <p style="margin-top:1.2vh">Nominálna rastie rýchlejšie než ceny → reálna rastie. Ceny rastú rýchlejšie → reálna klesá.</p>
+    </div>
+    <div class="card c2">
+      <h3>Príklad</h3>
+      <p>1 200 € → 1 260 € = <b>+5 %</b>, ceny <b>+8 %</b>.</p>
+      <p style="margin-top:1vh">Približne: 5 % − 8 % ≈ <b>−3 %</b></p>
+      <p style="margin-top:1vh">Presne: 105 / 108 × 100 ≈ <b>97,2</b></p>
+      <p class="big" style="margin-top:1vh">kúpna sila −2,8 %</p>
+    </div>
+  </div>
+  <div class="note"><p><b>Otázky:</b> Prečo môže mať človek vyššiu mzdu, ale žiť si horšie? Ktoré ceny si všímate najviac – potraviny, bývanie, doprava, energie?</p></div>
+</section>
+
+<section class="slide">
+  <h2><small>2.4</small>Formy mzdy</h2>
+  <div class="grid">
+    <div class="card c1"><h3>Časová</h3><p>Podľa odpracovaného času (hodiny, mesiac). Predvídateľná; treba sledovať kvalitu.</p></div>
+    <div class="card c2"><h3>Úkolová</h3><p>Podľa množstva práce alebo kusov. Podporuje výkon, no hrozí zanedbanie kvality a bezpečnosti.</p></div>
+    <div class="card c3"><h3>Provízna</h3><p>Podľa výsledku, napr. predaja. Príjem kolíše a výsledok neovplyvníš celý.</p></div>
+    <div class="card c4"><h3>Kombinovaná</h3><p>Pevná zložka plus pohyblivá: prémie, osobné ohodnotenie, príplatky.</p></div>
+  </div>
+</section>
+
+<section class="slide">
+  <h2><small>2.5 AKTIVITA</small>Vyber správny spôsob odmeňovania</h2>
+  <p>Vo dvojiciach vyberte formu mzdy a zdôvodnite výhody aj riziká.</p>
+  <ol>
+    <li>Recepčný pracuje podľa rozpisu zmien a robí rôzne úlohy.</li>
+    <li>Zberateľ nazbiera merateľné množstvo ovocia, kvalitu treba skontrolovať.</li>
+    <li>Obchodník získava zákazníkov a časť odmeny tvorí provízia.</li>
+    <li>Technik má stabilnú mzdu a štvrťročnú odmenu za kvalitu a bezpečnosť.</li>
+    <li>Tím musí spolupracovať na jednom spoločnom výsledku.</li>
+  </ol>
+  <details><summary>Riešenia</summary><p>1 časová · 2 úkolová s kontrolou kvality · 3 provízna alebo kombinovaná · 4 kombinovaná · 5 tímová odmena so základnou mzdou. Riešení môže byť viac, ak sú dobre zdôvodnené.</p></details>
+</section>
+
+<section class="slide">
+  <h2><small>3.1</small>Hrubá a čistá mzda</h2>
+  <div class="formula">
+    <span class="t c1">Hrubá mzda</span><b>−</b><span class="t c2">Odvody zamestnanca</span><b>−</b><span class="t c3">Preddavok na daň</span><b>±</b><span class="t c2">ďalšie položky</span><b>=</b><span class="t c4">Čistá mzda</span>
+  </div>
+  <div class="note"><p>Ponuka s hrubou mzdou 1 400 € neznamená 1 400 € na účte. Pri porovnávaní ponúk sa pýtaj, či je mzda hrubá alebo čistá. Zamestnávateľ platí navyše vlastné odvody – nie sú zrážkou z tvojej mzdy, ale sú nákladom práce.</p></div>
+  <p><b>Otázky:</b> Prečo zamestnávateľ uvádza hrubú mzdu? Prečo dvaja s rovnakou hrubou mzdou nemusia mať rovnakú čistú?</p>
+</section>
+
+<section class="slide">
+  <h2><small>3.2</small>Výplatná páska – základná orientácia</h2>
+  <div>
+    <span class="pill">Základná mzda</span><span class="pill">Príplatky (noc, víkend, sviatok)</span><span class="pill">Odmeny / prémie</span><span class="pill">Hrubá mzda</span><span class="pill">Odvody zamestnanca</span><span class="pill">Preddavok na daň</span><span class="pill">Ďalšie zrážky</span><span class="pill">Suma na vyplatenie</span>
+  </div>
+  <div class="note"><p><b>Praktická rada:</b> skontroluj obdobie, odpracované hodiny, dohodnutú mzdu, príplatky a výslednú sumu. Ak niečo nesedí, najprv sa obráť na mzdové oddelenie a požiadaj o vysvetlenie.</p></div>
+</section>
+
+<section class="slide">
+  <h2><small>3.2 · POVINNÉ ODVODY 2026</small>Čo sa strháva zo mzdy</h2>
+  <div class="two">
+    <table>
+      <tr><th>Odvod zamestnanca</th><th>Sadzba</th></tr>
+      <tr><td>Nemocenské</td><td>1,4 %</td></tr>
+      <tr><td>Starobné</td><td>4 %</td></tr>
+      <tr><td>Invalidné</td><td>3 %</td></tr>
+      <tr><td>Nezamestnanosť</td><td>1 %</td></tr>
+      <tr><td>Sociálne spolu</td><td>9,4 %</td></tr>
+      <tr><td>Zdravotné (so ZP spravidla 2,5 %)</td><td>5 %</td></tr>
+      <tr class="sum"><td>Spolu zamestnanec</td><td>14,4 %</td></tr>
+    </table>
+    <div class="card c2">
+      <h3>Navyše platí zamestnávateľ</h3>
+      <p class="big">25,2 % + 11 %</p>
+      <p style="margin-top:1vh">sociálne + zdravotné = približne <b>36,2 %</b> hrubej mzdy. Nie je to zrážka zamestnanca, je to náklad práce.</p>
+    </div>
+  </div>
+</section>
+
+<section class="slide">
+  <h2><small>3.2 · DAŇ Z PRÍJMOV 2026</small>Progresívne pásma</h2>
+  <div class="grid">
+    <div class="card c1"><p class="big">19 %</p><p>do ročného základu dane 43 983,32 €</p></div>
+    <div class="card c2"><p class="big">25 %</p><p>z časti nad túto hranicu do 60 349,21 €</p></div>
+    <div class="card c3"><p class="big">30 %</p><p>z časti nad 60 349,21 € do 75 010,32 €</p></div>
+    <div class="card c4"><p class="big">35 %</p><p>z časti nad 75 010,32 €</p></div>
+  </div>
+  <div class="note"><p>Vyššia sadzba sa uplatní len na časť základu dane v danom pásme, nie spätne na celý príjem. Daň sa nepočíta ako percento z celej hrubej mzdy – najprv sa zohľadnia povinné odvody a daňové úľavy. Zamestnávateľ počas roka zráža preddavky na daň.</p></div>
+</section>
+
+<section class="slide">
+  <h2><small>3.2 · ÚĽAVY NA DANI 2026</small>NČZD a daňový bonus</h2>
+  <div class="grid">
+    <div class="card c1"><h3>NČZD na daňovníka</h3><p>5 966,73 € ročne (497,23 € mesačne). Pri vyššom základe dane sa znižuje až na nulu. Znižuje základ dane, nie je to vyplatená hotovosť. Uplatní sa podpísaným vyhlásením u zamestnávateľa.</p></div>
+    <div class="card c2"><h3>Daňový bonus</h3><p>100 € mesačne na dieťa do 15 rokov, 50 € mesačne od 15 do 17 rokov (naposledy za mesiac 18. narodenín). Znižuje vypočítanú daň, má limity podľa príjmu. Uplatňuje jeden z rodičov.</p></div>
+    <div class="card c3"><h3>Ďalšie</h3><p>III. pilier do 180 € ročne. NČZD na manžela/manželku len pri splnení podmienok. Bonus na úroky z úveru na bývanie – v ročnom zúčtovaní.</p></div>
+  </div>
+  <div class="note"><p><b>Ročné zúčtovanie:</b> zamestnanec s príjmami len zo zamestnania môže požiadať zamestnávateľa do 15. februára 2027. Pri ďalších príjmoch (podnikanie, prenájom) môže byť potrebné daňové priznanie.</p></div>
+</section>
+
+<section class="slide">
+  <h2><small>3.3 VZOROVÁ VÝPLATNÁ PÁSKA · 09 / 2026</small>Zložky mzdy (hrubá mzda)</h2>
+  <div class="grid">
+    <div class="card c1"><h3>Zamestnávateľ</h3><p>ABC Slovakia, s.r.o.<br>Mlynské nivy 12, Bratislava</p></div>
+    <div class="card c2"><h3>Zamestnanec</h3><p>Jozef Vzorný, IT oddelenie<br>Hlavný TPP, 100 % úväzok (40 h/týž.)</p></div>
+    <div class="card c3"><h3>Obdobie</h3><p>09 / 2026, výplata 14. 10. 2026<br>VšZP · NČZD uplatnená</p></div>
+  </div>
+  <table>
+    <tr><th>Kód</th><th>Názov zložky mzdy</th><th>Dni / hodiny</th><th>Sadzba</th><th>Suma</th></tr>
+    <tr><td>101</td><td>Základná mzda (mesačná)</td><td>21 d / 168,0 h</td><td>–</td><td>1 800,00 €</td></tr>
+    <tr><td>501</td><td>Náhrada mzdy za dovolenku</td><td>1 d / 8,0 h</td><td>9,2500 €/h</td><td>74,00 €</td></tr>
+    <tr><td>210</td><td>Osobné hodnotenie / prémie</td><td>–</td><td>–</td><td>150,00 €</td></tr>
+    <tr class="sum"><td colspan="2">HRUBÁ MZDA CELKOM</td><td>22 d / 176,0 h</td><td></td><td>2 024,00 €</td></tr>
+  </table>
+  <div class="note"><p>Fond pracovného času 22 d / 176 h · odpracované 21 d · dovolenka čerpaná 1 d · zostatok dovolenky 26 dní (nárok 25 + prenos 2 − čerpané 1).</p></div>
+</section>
+
+<section class="slide">
+  <h2><small>3.3 VZOROVÁ VÝPLATNÁ PÁSKA · 09 / 2026</small>Odvody zamestnanca a preddavok na daň</h2>
+  <div class="two">
+    <table>
+      <tr><th>Poistenie</th><th>Sadzba</th><th>Suma</th></tr>
+      <tr><td>Zdravotné</td><td>5,00 %</td><td>101,20 €</td></tr>
+      <tr><td>Nemocenské</td><td>1,40 %</td><td>28,33 €</td></tr>
+      <tr><td>Starobné</td><td>4,00 %</td><td>80,96 €</td></tr>
+      <tr><td>Invalidné</td><td>3,00 %</td><td>60,72 €</td></tr>
+      <tr><td>Nezamestnanosť</td><td>1,00 %</td><td>20,24 €</td></tr>
+      <tr class="sum"><td>Spolu odvody</td><td>14,40 %</td><td>291,45 €</td></tr>
+    </table>
+    <table>
+      <tr><th>Výpočet dane</th><th>Suma</th></tr>
+      <tr><td>Hrubá mzda</td><td>2 024,00 €</td></tr>
+      <tr><td>− odvody zamestnanca</td><td>291,45 €</td></tr>
+      <tr><td>= zdaniteľná mzda</td><td>1 732,55 €</td></tr>
+      <tr><td>− NČZD na daňovníka</td><td>497,23 €</td></tr>
+      <tr><td>= základ dane</td><td>1 235,32 €</td></tr>
+      <tr class="sum"><td>Preddavok na daň (19 %)</td><td>234,71 €</td></tr>
+    </table>
+  </div>
+  <div class="note"><p><b>Čistá mzda:</b> 2 024,00 − 291,45 − 234,71 = <b>1 497,84 €</b> · − stravné / zrážky 25,00 € = <b>k úhrade na účet 1 472,84 €</b></p></div>
+</section>
+
+<section class="slide">
+  <h2><small>3.3 VZOROVÁ VÝPLATNÁ PÁSKA · 09 / 2026</small>Odvody zamestnávateľa a cena práce</h2>
+  <div class="two">
+    <table>
+      <tr><th>Poistenie zamestnávateľa</th><th>Sadzba</th><th>Suma</th></tr>
+      <tr><td>Zdravotné</td><td>11 %</td><td>222,64 €</td></tr>
+      <tr><td>Nemocenské</td><td>1,4 %</td><td>28,33 €</td></tr>
+      <tr><td>Starobné</td><td>14 %</td><td>283,36 €</td></tr>
+      <tr><td>Invalidné</td><td>3 %</td><td>60,72 €</td></tr>
+      <tr><td>Nezamestnanosť</td><td>1 %</td><td>20,24 €</td></tr>
+      <tr><td>Úrazové</td><td>0,8 %</td><td>16,19 €</td></tr>
+      <tr><td>Garančné</td><td>0,25 %</td><td>5,06 €</td></tr>
+      <tr><td>Rezervný fond solidarity</td><td>4,75 %</td><td>96,14 €</td></tr>
+      <tr class="sum"><td>Spolu zamestnávateľ</td><td>36,2 %</td><td>732,68 €</td></tr>
+    </table>
+    <div class="card c2">
+      <h3>Celková cena práce</h3>
+      <p class="big">2 756,68 €</p>
+      <p style="margin-top:1vh">= hrubá mzda 2 024,00 € + odvody zamestnávateľa 732,68 €. Informácia pre zamestnanca – nie je to zrážka z jeho mzdy.</p>
+    </div>
+  </div>
+</section>
+
+<section class="slide">
+  <h2><small>3.4 AKTIVITA</small>Porovnanie dvoch pracovných ponúk</h2>
+  <table>
+    <tr><th>Kritérium</th><th>Ponuka A</th><th>Ponuka B</th></tr>
+    <tr><td>Uvedená mzda</td><td>1 500 € hrubého</td><td>1 400 € hrubého + možná odmena</td></tr>
+    <tr><td>Dochádzanie</td><td>10 minút</td><td>45 minút</td></tr>
+    <tr><td>Pracovný čas</td><td>Pevný</td><td>Flexibilný</td></tr>
+    <tr><td>Rozvoj</td><td>Málo školení</td><td>Odborné školenia</td></tr>
+    <tr><td>Odmena</td><td>Pevná</td><td>Časť závisí od výsledkov</td></tr>
+  </table>
+</section>
+
+<section class="slide">
+  <h2><small>3.5</small>Záverečný kvíz</h2>
+  <ol>
+    <li>Vysvetli rozdiel medzi nominálnou a reálnou mzdou.</li>
+    <li>Čo je hrubá mzda?</li>
+    <li>Ktorá forma mzdy závisí od počtu vyrobených kusov?</li>
+    <li>Uveď dva faktory okrem mzdy, ktoré ovplyvňujú výber zamestnania.</li>
+    <li>Nominálna mzda vzrástla o 4 %, ceny o 7 %. Čo sa približne stalo s reálnou mzdou?</li>
+  </ol>
+  <details><summary>Kľúč</summary><ol><li>Nominálna je suma peňazí, reálna vyjadruje kúpnu silu.</li><li>Mzda pred príslušnými zrážkami zamestnanca.</li><li>Úkolová mzda.</li><li>Napr. pracovný čas, bezpečnosť, dochádzanie, kolektív, stabilita, rozvoj.</li><li>Klesla približne o 3 %.</li></ol></details>
+</section>
+
+<section class="slide dark">
+  <h2>Čo si zapamätať</h2>
+  <div>
+    <span class="pill">Práca je výrobný faktor</span>
+    <span class="pill">Mzdu ovplyvňuje ponuka a dopyt</span>
+    <span class="pill">Reálna mzda = kúpna sila</span>
+    <span class="pill">Hrubá ≠ čistá mzda</span>
+    <span class="pill">Porovnávaj celú ponuku, nielen číslo</span>
+  </div>
+  <p style="font-weight:600;margin-top:2vh">Ďakujem za pozornosť.</p>
+</section>
+
+<div class="bar" id="bar"></div>
+<div class="nav" id="nav">
+  <span id="count"></span>
+  <button id="prev" aria-label="Predchádzajúci slajd">&#8592;</button>
+  <button id="next" aria-label="Ďalší slajd">&#8594;</button>
+</div>
+
+<script>
+const s=[...document.querySelectorAll('.slide')];let i=0;
+const nav=document.getElementById('nav');
+function go(n){i=Math.max(0,Math.min(s.length-1,n));s.forEach((e,k)=>e.classList.toggle('on',k===i));
+document.getElementById('bar').style.width=((i+1)/s.length*100)+'%';
+document.getElementById('count').textContent=(i+1)+' / '+s.length;
+nav.classList.toggle('ond',s[i].classList.contains('dark'));}
+document.getElementById('next').onclick=()=>go(i+1);
+document.getElementById('prev').onclick=()=>go(i-1);
+
+const themes=['light','dark','contrast'];
+const tb=[...document.querySelectorAll('.theme button')];
+function setTheme(t){document.documentElement.dataset.theme=t;
+tb.forEach(b=>b.setAttribute('aria-pressed',b.dataset.t===t));
+try{localStorage.setItem('praca-mzda-theme',t)}catch(e){}}
+tb.forEach(b=>b.onclick=()=>setTheme(b.dataset.t));
+let saved;try{saved=localStorage.getItem('praca-mzda-theme')}catch(e){}
+setTheme(themes.includes(saved)?saved:'light');
+
+addEventListener('keydown',e=>{
+if(['ArrowRight','PageDown',' '].includes(e.key)){e.preventDefault();go(i+1)}
+if(['ArrowLeft','PageUp'].includes(e.key))go(i-1);
+if(e.key==='t'||e.key==='T'){setTheme(themes[(themes.indexOf(document.documentElement.dataset.theme)+1)%3])}});
+go(0);
+</script>
+</body>
+</html>
